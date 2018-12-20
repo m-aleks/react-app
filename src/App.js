@@ -10,7 +10,6 @@ class App extends Component {
       genre: "comedy-drama",
       actors: ["Tom Hanks", "Robin Wright", "Gary Sinise"]
     }
-    //this.output = this.output.bind(this);
   }
 
   render() {
@@ -43,9 +42,7 @@ class App extends Component {
                   <span className="summary_item_text">{this.state.actors.join(", ")}</span>
                 </div>
               </div>
-
             </div>
-
           </section>
         </div>
       </div>

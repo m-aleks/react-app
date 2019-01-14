@@ -19,8 +19,8 @@ function mapStateToProps(state) {
 // export const FilmsList = getFilms(List);
 // export const FilmsLDashboard = getFilms(Dashboard);
 
-const FilmsList = getFilms(List);
-const FilmsLDashboard = getFilms(Dashboard);
+const FilmsListToConnect = getFilms(List);
+const FilmsLDashboardToConnect = getFilms(Dashboard);
 
-export default connect(mapStateToProps)(FilmsList);
-// export const FilmsLDashboard = connect(mapStateToProps)(FilmsLDashboard);
+export const FilmsList = connect(mapStateToProps)(FilmsListToConnect);
+export const FilmsLDashboard = connect(mapStateToProps)(FilmsLDashboardToConnect);

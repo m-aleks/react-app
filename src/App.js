@@ -5,8 +5,8 @@ import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Home from './components/Home.jsx';
 import FilmEditor from './components/FilmEditor.jsx';
-// import { FilmsList, FilmsLDashboard } from './components/Films.jsx';
-import FilmsList from './components/Films.jsx';
+import { FilmsList, FilmsLDashboard } from './components/Films.jsx';
+// import FilmsList from './components/Films.jsx';
 
 class App extends Component {
   render() {
@@ -21,7 +21,7 @@ class App extends Component {
             </header>
             <Route path="/" exact component={Home} />
             <Route path="/list" component={FilmsList} />
-            {/* <Route path="/dashboard" component={FilmsLDashboard} /> */}
+            <Route path="/dashboard" component={FilmsLDashboard} />
             <Route path="/edit/:id" component={FilmEditor} />
           </div>
         </div>

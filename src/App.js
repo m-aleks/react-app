@@ -1,53 +1,35 @@
 import React, { Component } from 'react';
 import './App.css';
+// import Details from './components/details.jsx';
+
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Home from './components/Home.jsx';
+import FilmEditor from './components/FilmEditor.jsx';
+// import { FilmsList, FilmsLDashboard } from './components/Films.jsx';
+import FilmsList from './components/Films.jsx';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "Forrest Gump",
-      year: "1994",
-      genre: "comedy-drama",
-      actors: ["Tom Hanks", "Robin Wright", "Gary Sinise"]
-    }
-  }
-
   render() {
     return (
-      <div className="App">
-        <div className="container">
-          <header className="app_header">
-            <h1>
-              My React App
-            </h1>
-          </header>
-          <section>
-            <div className="section_heading">
-              <h2>
-                {this.state.title}
-              </h2>
-            </div>
-            <div className="section_content">
-              <div className="summary">
-                <div className="summary_item">
-                  <h4 className="summary_item_heading inline">Year:</h4>
-                  <span className="summary_item_text">{this.state.year}</span>
-                </div>
-                <div className="summary_item">
-                  <h4 className="summary_item_heading inline">Genre:</h4>
-                  <span className="summary_item_text">{this.state.genre}</span>
-                </div>
-                <div className="summary_item">
-                  <h4 className="summary_item_heading inline">Actors:</h4>
-                  <span className="summary_item_text">{this.state.actors.join(", ")}</span>
-                </div>
-              </div>
-            </div>
-          </section>
+      <Router>
+        <div className="App">
+          <div className="container">
+            <header className="app_header">
+              <h1>
+                My React App
+                </h1>
+            </header>
+            <Route path="/" exact component={Home} />
+            <Route path="/list" component={FilmsList} />
+            {/* <Route path="/dashboard" component={FilmsLDashboard} /> */}
+            <Route path="/edit/:id" component={FilmEditor} />
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
+
+
 
 export default App;

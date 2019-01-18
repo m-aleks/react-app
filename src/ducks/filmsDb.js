@@ -7,9 +7,9 @@ export default function filmsDb (state = initialState, action){
     if(action.type === EDIT_FILM){
         const newDb=state.films.map(film=>{
             if(film.id === action.payload.id){
-                film.poster = action.payload.newPoster
-                film.genre = action.payload.newGenre
-                film.description = action.payload.newDescription
+                film.poster = action.payload.poster
+                film.genre = action.payload.genre
+                film.description = action.payload.description
             }
             return film
         })
@@ -18,14 +18,14 @@ export default function filmsDb (state = initialState, action){
     return state
 }
 
-export function editFilm(id, newPoster, newGenre, newDescription){
+export function editFilm(filmData){
     return {
         type: EDIT_FILM,
         payload:{
-            id,
-            newPoster, 
-            newGenre, 
-            newDescription
+            id:filmData.id,
+            poster: filmData.poster, 
+            genre:filmData.genre, 
+            description:filmData.description
         }
 
     }

@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { connect } from 'react-redux'
 import Home from './components/Home.jsx';
 import FilmEditor from './components/FilmEditor.jsx';
 import { FilmsList, FilmsDashboard } from './components/Films.jsx';
 import Details from './components/Details.jsx';
 
 class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {films: this.props.films}
+  }
+  getFilmById=(id)=>{
+   return this.props.films.filter(item => item.id == id)[0]
+  }
+
   render() {
     return (
       <Router>
@@ -21,8 +30,8 @@ class App extends Component {
               <Route path="/" exact component={Home} />
               <Route path="/list" component={FilmsList} />
               <Route path="/dashboard" component={FilmsDashboard} />
-              <Route path="/edit/:id" component={FilmEditor} />
-              <Route path="/details/:id" component={Details} />
+              <Route path="/edit/:id" render={()=><FilmEditor getFilmById={this.getFilmById}/>}/>
+              <Route path="/details/:id" render={()=><Details getFilmById={this.getFilmById}/>} />
             </main>
           </div>
         </div>
@@ -31,6 +40,9 @@ class App extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  const { films } = state
+  return { films }
+}
 
-
-export default App;
+export default connect(mapStateToProps)(App);

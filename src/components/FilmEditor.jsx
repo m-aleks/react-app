@@ -6,28 +6,33 @@ import { withRouter } from "react-router-dom";
 class FilmEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      id:"",
+      genre:"",
+      poster:"",
+      description:""
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
   }
   componentDidMount() {
-    this.setState(this.props.films.filter(item => item.id == this.props.match.params.id)[0])
+    this.setState(this.props.getFilmById(this.props.match.params.id))
   }
 
   handleChange(e) {
-    this.setState(Object.assign({}, this.state, { [e.target.name]: e.target.value }));
+    this.setState({[e.target.name]: e.target.value });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.editFilm(
-      this.state.id,
-      this.state.poster,
-      this.state.genre,
-      this.state.description
-    )
+    this.props.editFilm({
+      id:this.state.id,
+      poster:this.state.poster,
+      genre:this.state.genre,
+      description:this.state.description
+    })
     this.props.history.push("/dashboard");
   }
 
@@ -36,7 +41,7 @@ class FilmEditor extends React.Component {
   }
 
   render() {
-    const editedFilm = this.props.films.filter(item => item.id == this.props.match.params.id)[0];
+    const editedFilm = this.state
     return (
       <React.Fragment>
         <h2>Edit film "{editedFilm.title}"</h2>
@@ -44,15 +49,15 @@ class FilmEditor extends React.Component {
           <form onSubmit={this.handleSubmit}>
             <label>
               Poster Url:<br />
-              <input type="text" name="poster" defaultValue={editedFilm.poster} onChange={this.handleChange} className="editor_field editor_field_poster" /><br />
+              <input type="text" name="poster" value={editedFilm.poster} onChange={this.handleChange} className="editor_field editor_field_poster" /><br />
             </label>
             <label>
               Genre:<br />
-              <input type="text" name="genre" defaultValue={editedFilm.genre} onChange={this.handleChange} className="editor_field editor_field_genre" /><br />
+              <input type="text" name="genre" value={editedFilm.genre} onChange={this.handleChange} className="editor_field editor_field_genre" /><br />
             </label>
             <label>
               Description:<br />
-              <textarea name="description" defaultValue={editedFilm.description} onChange={this.handleChange} rows="5" className="editor_field editor_field_description" /><br />
+              <textarea name="description" value={editedFilm.description} onChange={this.handleChange} rows="5" className="editor_field editor_field_description" /><br />
             </label>
             <input type="submit" value="Submit" className="editor_button" /><br />
             <input type="button" value="Cancel" onClick={this.handleCancel} className="editor_button" />
@@ -66,14 +71,10 @@ class FilmEditor extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  const { films } = state
-  return { films }
-}
 const mapDispatchToProps = dispatch => {
   return {
-    editFilm: (id, newPoster, newGenre, newDescription) => dispatch(editFilm(id, newPoster, newGenre, newDescription))
+    editFilm: (filmData) => dispatch(editFilm(filmData))
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FilmEditor))
+export default withRouter(connect(null, mapDispatchToProps)(FilmEditor))

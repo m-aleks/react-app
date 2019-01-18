@@ -1,9 +1,8 @@
 import React from "react";
-import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom";
 
 function Details(props) {
-    const shownFilm = props.films.filter(item => item.id == props.match.params.id)[0];
+    const shownFilm = props.getFilmById(props.match.params.id);
     return (
         <div>
             <button onClick={()=>props.history.goBack()}>Back</button>
@@ -38,9 +37,4 @@ function Details(props) {
     );
 }
 
-function mapStateToProps(state) {
-    const { films } = state
-    return { films }
-}
-
-export default withRouter(connect(mapStateToProps)(Details))
+export default withRouter(Details)

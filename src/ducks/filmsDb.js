@@ -6,7 +6,8 @@ export const EDIT_FILM = 'EDIT_FILM'
 export default function filmsDb (state = initialState, action){
     if(action.type === EDIT_FILM){
         const newDb=state.films.map(film=>{
-            if(film.id === action.payload.id){
+            console.log("action.payload.id=",action.payload.id)
+            if(film.id == action.payload.id){                
                 film.poster = action.payload.poster
                 film.genre = action.payload.genre
                 film.description = action.payload.description

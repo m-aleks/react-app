@@ -2,73 +2,64 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { editFilm } from '../ducks/filmsDb'
 import { withRouter } from "react-router-dom";
+import { useState, useEffect, createRef } from 'react';
 
-class FilmEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id:"",
-      genre:"",
-      poster:"",
-      description:""
-    };
+function FilmEditor(props) {
+  let toFocus = createRef();
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-  }
-  componentDidMount() {
-    this.setState(this.props.getFilmById(this.props.match.params.id))
-  }
+  useEffect(()=>{
+    toFocus.current.focus()
+  })
 
-  handleChange(e) {
-    this.setState({[e.target.name]: e.target.value });
-  }
+  const id=props.match.params.id
+  const editedFilm =  props.getFilmById(id)
 
-  handleSubmit(e) {
+  const title = editedFilm.title
+  const [genre, setGenre] = useState(editedFilm.genre)
+  const [poster, setPoster] = useState(editedFilm.poster)
+  const [description, setDescription] = useState(editedFilm.description)
+
+  function handleSubmit(e) {
     e.preventDefault();
-    this.props.editFilm({
-      id:this.state.id,
-      poster:this.state.poster,
-      genre:this.state.genre,
-      description:this.state.description
+    props.editFilm({
+      id,
+      poster,
+      genre,
+      description
     })
-    this.props.history.push("/dashboard");
+    props.history.push("/dashboard");
   }
 
-  handleCancel() {
-    this.props.history.goBack();
+  function handleCancel() {
+    props.history.goBack();
   }
-
-  render() {
-    const editedFilm = this.state
-    return (
-      <React.Fragment>
-        <h2>Edit film "{editedFilm.title}"</h2>
-        <div className="editor_wrap">
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Poster Url:<br />
-              <input type="text" name="poster" value={editedFilm.poster} onChange={this.handleChange} className="editor_field editor_field_poster" /><br />
-            </label>
-            <label>
-              Genre:<br />
-              <input type="text" name="genre" value={editedFilm.genre} onChange={this.handleChange} className="editor_field editor_field_genre" /><br />
-            </label>
-            <label>
-              Description:<br />
-              <textarea name="description" value={editedFilm.description} onChange={this.handleChange} rows="5" className="editor_field editor_field_description" /><br />
-            </label>
-            <input type="submit" value="Submit" className="editor_button" /><br />
-            <input type="button" value="Cancel" onClick={this.handleCancel} className="editor_button" />
-          </form>
-          <div className="editor_poster">
-            <img src={this.state.poster} alt="Poster" />
-          </div>
+  
+  return (
+    <React.Fragment>
+      <h2>Edit film "{title}"</h2>
+      <div className="editor_wrap">
+        <form onSubmit={handleSubmit}>
+          <label>
+            Poster Url:<br />
+            <input ref={toFocus} type="text" name="poster" value={poster} onChange={(e)=>setPoster(e.target.value)} className="editor_field editor_field_poster" /><br />
+          </label>
+          <label>
+            Genre:<br />
+            <input type="text" name="genre" value={genre} onChange={(e)=>setGenre(e.target.value)} className="editor_field editor_field_genre" /><br />
+          </label>
+          <label>
+            Description:<br />
+            <textarea name="description" value={description} onChange={(e)=>setDescription(e.target.value)} rows="5" className="editor_field editor_field_description" /><br />
+          </label>
+          <input type="submit" value="Submit" className="editor_button" /><br />
+          <input type="button" value="Cancel" onClick={handleCancel} className="editor_button" />
+        </form>
+        <div className="editor_poster">
+          <img src={poster} alt="Poster" />
         </div>
-      </React.Fragment>
-    );
-  }
+      </div>
+    </React.Fragment>
+  );
 }
 
 const mapDispatchToProps = dispatch => {
